@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T-Shirts Factory | Custom Printing in Santa Ana | Family-Owned Since 1996</title>
+<meta name="description" content="Family-owned custom t-shirt printing in Santa Ana since 1996. DTG printing with no minimum order, school uniforms, hoodies and everyday apparel. 2337 S Bristol St.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5F1E6;
+    --cream-2:#EFE9DA;
+    --card:#FFFDF8;
+    --green:#1E3A2F;
+    --green-2:#163026;
+    --mustard:#E0A93E;
+    --ink:#22302B;
+    --muted:#6E6F66;
+    --line:#E0D9C6;
+    --display:'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --body:'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--mustard);outline-offset:3px}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:0 1.4rem}
+  .eyebrow{font-family:var(--display);font-weight:700;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  h2{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.08;letter-spacing:-.02em;color:var(--green)}
+
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:60;background:rgba(245,241,230,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.4rem;max-width:1200px;margin:0 auto;gap:1rem}
+  .logo{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;color:var(--green);text-decoration:none;text-transform:uppercase}
+  .navlinks{display:flex;gap:2rem;font-weight:600;font-size:.94rem}
+  .navlinks a{text-decoration:none;color:var(--ink)}
+  .navlinks a:hover{color:var(--green);text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--mustard);text-decoration-thickness:2px}
+  .btn{font-family:var(--display);font-weight:700;font-size:.92rem;text-decoration:none;display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.4rem;border-radius:999px;transition:transform .12s ease,background .15s ease,color .15s ease;border:2px solid transparent}
+  .btn .arrow{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--mustard);color:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;flex:none}
+  .btn.solid{background:var(--green);color:#fff}
+  .btn.solid:hover{background:var(--green-2)}
+  .btn.outline{border-color:var(--green);color:var(--green);background:transparent}
+  .btn.outline:hover{background:var(--green);color:#fff}
+  .btn:active{transform:translateY(2px)}
+  @media(max-width:820px){.navlinks{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(2.5rem,6vw,5rem) 0 clamp(2.5rem,5vw,4.5rem)}
+  .hero-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+  .spark{color:var(--mustard);margin-bottom:1.2rem}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.7rem,6.5vw,4.6rem);line-height:1.03;letter-spacing:-.03em;color:var(--green)}
+  .hero p.sub{margin:1.5rem 0 2rem;font-size:clamp(1.02rem,1.8vw,1.18rem);max-width:32rem;color:#42504A}
+  .cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+  .trustline{margin-top:2.4rem;padding-top:1.4rem;border-top:2px dashed var(--mustard);display:flex;gap:.9rem;flex-wrap:wrap;align-items:center;font-weight:700;font-size:.9rem;color:var(--green)}
+  .trustline .sep{color:var(--mustard);font-size:.7rem}
+  .hero-photo{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(30,58,47,.18)}
+  /* HANDOFF: replace the .photo-placeholder div below with:
+     <img src="images/shop-hero.jpg" alt="The team printing a custom shirt at T-Shirts Factory in Santa Ana" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3">
+     Use a real photo of the owners or staff at the DTG machine. Do not use stock photos. */
+  .photo-placeholder{aspect-ratio:4/3;background:
+      radial-gradient(circle at 70% 30%, rgba(224,169,62,.25), transparent 55%),
+      linear-gradient(160deg,#26463A 0%, #1E3A2F 60%, #163026 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:#EFE9DA;text-align:center;padding:2rem}
+  .photo-placeholder .tee{width:110px;height:110px;opacity:.85}
+  .photo-placeholder .label{font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+  .made-local{position:absolute;right:1.1rem;bottom:1.1rem;background:var(--card);border-radius:14px;padding:.8rem 1.1rem;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+  .made-local .sun{color:var(--mustard);font-size:1rem;line-height:1}
+  .made-local strong{display:block;font-size:.9rem;color:var(--green)}
+  .made-local span{font-size:.78rem;color:var(--muted)}
+
+  /* ---------- ticker ---------- */
+  .ticker{background:var(--mustard);color:var(--green)}
+  .ticker-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .ticker-in div{font-family:var(--display);font-weight:700;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:.95rem .8rem;border-left:1px solid rgba(30,58,47,.25)}
+  .ticker-in div:first-child{border-left:none}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(3.2rem,7vw,5.5rem) 0}
+
+  /* services */
+  .svc-head{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:end;margin-bottom:2.6rem}
+  @media(max-width:820px){.svc-head{grid-template-columns:1fr}}
+  .svc-head p{color:#42504A}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+  @media(max-width:960px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.svc-grid{grid-template-columns:1fr}}
+  .svc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.5rem;min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;gap:.5rem;position:relative;transition:transform .15s ease,box-shadow .15s ease}
+  .svc:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(30,58,47,.12)}
+  .svc .num{position:absolute;top:1.2rem;left:1.4rem;font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.12em;color:var(--mustard)}
+  .svc h3{font-family:var(--display);font-weight:700;font-size:1.3rem;color:var(--green);letter-spacing:-.01em}
+  .svc p{font-size:.94rem;color:#4A554F}
+  .svc.dark{background:var(--green);border-color:var(--green)}
+  .svc.dark h3{color:#fff}
+  .svc.dark p{color:#D7DED8}
+  .svc.gold{background:var(--mustard);border-color:var(--mustard)}
+  .svc.gold h3{color:var(--green)}
+  .svc.gold p{color:#4A3E17}
+  .svc.gold .num{color:var(--green)}
+
+  /* design section */
+  .design{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .design-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+  @media(max-width:900px){.design-grid{grid-template-columns:1fr}}
+  .design p.body{margin:1.3rem 0 1.6rem;max-width:30rem;color:#42504A}
+  .textlink{font-family:var(--display);font-weight:700;color:var(--green);text-decoration:none;border-bottom:3px solid var(--mustard);padding-bottom:3px}
+  .textlink:hover{border-color:var(--green)}
+  .design-cards{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:auto auto;gap:1rem}
+  .dcard{border-radius:16px;padding:1.3rem;display:flex;flex-direction:column;justify-content:flex-end;gap:.2rem;min-height:150px}
+  .dcard.big{grid-row:span 2;background:var(--cream);border:1px solid var(--line);align-items:center;justify-content:center;text-align:center}
+  .dcard.big .tee-box{border:2px solid var(--green);font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.1em;padding:.9rem .8rem;color:var(--green);margin-bottom:1rem}
+  .dcard strong{font-family:var(--display);font-weight:700;color:inherit}
+  .dcard span{font-size:.82rem;opacity:.8}
+  .dcard.greenc{background:var(--green);color:#EFE9DA}
+  .dcard.goldc{background:var(--mustard);color:var(--green)}
+  .badge-circle{width:52px;height:52px;border:2px solid var(--mustard);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;color:var(--mustard);margin-bottom:auto}
+
+  /* how it works */
+  .steps{margin-top:2.4rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem}
+  @media(max-width:960px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.steps{grid-template-columns:1fr}}
+  .step{border-top:1px solid var(--line);padding-top:1.2rem}
+  .step .n{width:2rem;height:2rem;border-radius:50%;background:var(--mustard);color:var(--green);font-family:var(--display);font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+  .step h3{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--green);margin-bottom:.35rem}
+  .step p{font-size:.93rem;color:#4A554F}
+
+  /* why */
+  .why{background:var(--cream-2)}
+  .why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+  @media(max-width:900px){.why-grid{grid-template-columns:1fr}}
+  .why-list{display:flex;flex-direction:column;gap:1rem}
+  .why-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.4rem}
+  .why-item h3{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--green);margin-bottom:.25rem}
+  .why-item p{font-size:.93rem;color:#4A554F}
+
+  /* quote form */
+  .quote{background:var(--green);color:#EFE9DA}
+  .quote-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+  @media(max-width:900px){.quote-grid{grid-template-columns:1fr}}
+  .quote .eyebrow{color:var(--mustard)}
+  .quote h2{color:#fff}
+  .quote p.body{margin-top:1.3rem;max-width:26rem;color:#C9D3CC}
+  .quote .phone-big{margin-top:2.2rem;padding-top:1.6rem;border-top:1px solid rgba(239,233,218,.25)}
+  .quote .phone-big .lab{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mustard)}
+  .quote .phone-big a{display:block;font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;text-decoration:none;margin-top:.4rem;letter-spacing:-.01em}
+  form{background:var(--card);border-radius:20px;padding:clamp(1.4rem,3vw,2.2rem);color:var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+  @media(max-width:620px){form{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:.35rem}
+  .field.full{grid-column:1 / -1}
+  label{font-weight:700;font-size:.88rem;color:var(--green)}
+  input,select,textarea{font-family:var(--body);font-size:.95rem;padding:.8rem .9rem;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--mustard);box-shadow:0 0 0 3px rgba(224,169,62,.25)}
+  textarea{min-height:120px;resize:vertical}
+  .submit{grid-column:1 / -1}
+  .form-note{grid-column:1 / -1;font-size:.8rem;color:var(--muted)}
+  .hp{position:absolute;left:-9999px}
+
+  /* visit */
+  .visit-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+  @media(max-width:900px){.visit-grid{grid-template-columns:1fr}}
+  .visit .addr{font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,3vw,2.1rem);color:var(--green);line-height:1.25;letter-spacing:-.01em}
+  .visit dl{margin:1.6rem 0 2rem;display:grid;grid-template-columns:auto 1fr;gap:.55rem 1.4rem}
+  .visit dt{font-family:var(--display);font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:.25rem}
+  .visit dd a{color:var(--green);font-weight:600}
+  .facts{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.6rem}
+  .facts h3{font-family:var(--display);font-weight:700;font-size:1.15rem;color:var(--green);margin-bottom:.9rem}
+  .facts ul{list-style:none}
+  .facts li{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px dashed var(--line);font-size:.94rem}
+  .facts li:last-child{border-bottom:none}
+  .facts li span:last-child{font-weight:700;color:var(--green);text-align:right}
+
+  /* footer */
+  footer{background:var(--green-2);color:#C9D3CC;padding:2.6rem 0}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+  .foot .logo{color:#fff}
+  .foot p{font-size:.85rem;margin-top:.6rem}
+  .foot .fine{font-size:.78rem;opacity:.75}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#top">T-Shirts Factory</a>
+    <nav class="navlinks" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#design">Our Work</a>
+      <a href="#how">How It Works</a>
+      <a href="#visit">Visit Us</a>
+    </nav>
+    <a class="btn solid" href="#quote">Get a Free Quote <span class="arrow">&rarr;</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <svg class="spark" width="44" height="34" viewBox="0 0 44 34" fill="none" aria-hidden="true"><path d="M2 32 L18 18 M8 32 L20 24 M2 24 L14 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <p class="eyebrow">Custom Printing in Santa Ana</p>
+        <h1>Your idea.<br>Printed your way.</h1>
+        <p class="sub">Custom tees, hoodies, uniforms and more, made locally for teams, businesses, events and one-of-one ideas.</p>
+        <div class="cta-row">
+          <a class="btn solid" href="#quote">Get a Free Quote <span class="arrow">&rarr;</span></a>
+          <a class="btn outline" href="tel:+17145525501">Call (714) 552-5501</a>
+        </div>
+        <div class="trustline">
+          <span>Family-owned since 1996</span><span class="sep">&#9679;</span>
+          <span>No minimum order</span><span class="sep">&#9679;</span>
+          <span>Fast, friendly service</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <!-- HANDOFF: replace this placeholder with a real photo of the staff at the shop (see comment in CSS) -->
+        <div class="photo-placeholder">
+          <svg class="tee" viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M30 15 L42 10 C42 10 45 16 50 16 C55 16 58 10 58 10 L70 15 L82 30 L70 40 L70 88 L30 88 L30 40 L18 30 Z" stroke="#EFE9DA" stroke-width="2.5" fill="rgba(239,233,218,.08)"/></svg>
+          <span class="label">Your shop photo goes here</span>
+        </div>
+        <div class="made-local">
+          <div class="sun">&#10040;</div>
+          <strong>Made locally</strong>
+          <span>Santa Ana, CA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-in">
+      <div>Direct-to-Garment Printing</div>
+      <div>One Shirt or a Whole Group</div>
+      <div>Uniforms &amp; Everyday Essentials</div>
+      <div>Friendly In-Person Help</div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="svc-head">
+        <div>
+          <p class="eyebrow">What We Do</p>
+          <h2>One shop for everyday apparel and custom ideas.</h2>
+        </div>
+        <p>Order one special piece or outfit a whole group. We help you choose the right garment and bring your design to life.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc dark">
+          <span class="num">01</span>
+          <h3>Custom T-shirts</h3>
+          <p>Photos, artwork, names and logos printed with no minimum order.</p>
+        </div>
+        <div class="svc">
+          <span class="num">02</span>
+          <h3>School uniforms</h3>
+          <p>Affordable uniform basics and essentials for kids and families.</p>
+        </div>
+        <div class="svc">
+          <span class="num">03</span>
+          <h3>Teams &amp; businesses</h3>
+          <p>Coordinated apparel for staff, sports, clubs and organizations.</p>
+        </div>
+        <div class="svc">
+          <span class="num">04</span>
+          <h3>Hoodies &amp; sweaters</h3>
+          <p>Comfortable layers ready for your artwork, event or brand.</p>
+        </div>
+        <div class="svc">
+          <span class="num">05</span>
+          <h3>Socks &amp; basics</h3>
+          <p>Everyday essentials and undergarments at low prices, kids to adult sizes.</p>
+        </div>
+        <div class="svc gold">
+          <span class="num">06</span>
+          <h3>One-of-one gifts</h3>
+          <p>Turn a photo, joke or special moment into something wearable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="design" class="design">
+    <div class="wrap design-grid">
+      <div>
+        <p class="eyebrow">Made for Real Life</p>
+        <h2>Your design belongs on more than a screen.</h2>
+        <p class="body">Bring a finished file, a photo on your phone or just the beginning of an idea. The team will help you find a practical way to print it.</p>
+        <a class="textlink" href="#quote">Start your project &rarr;</a>
+      </div>
+      <div class="design-cards">
+        <div class="dcard big">
+          <div class="tee-box">LOCAL<br>IDEAS</div>
+          <strong style="color:var(--green)">One-of-one prints</strong>
+          <span style="color:var(--muted)">Personal gifts &amp; special moments</span>
+        </div>
+        <div class="dcard greenc">
+          <div class="badge-circle">SA</div>
+          <strong>Team gear</strong>
+          <span>Groups, clubs &amp; staff</span>
+        </div>
+        <div class="dcard goldc">
+          <strong>School-ready</strong>
+          <span>Uniforms &amp; everyday basics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <p class="eyebrow">How It Works</p>
+      <h2>Simple from idea to pickup.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <h3>Share your idea</h3>
+          <p>Bring your artwork, a photo or a description of what you want.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <h3>Pick your garment</h3>
+          <p>Choose from quality tees, hoodies, uniforms and more on the rack.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <h3>We print it</h3>
+          <p>Our direct-to-garment machine lays down crisp, full-color prints.</p>
+        </div>
+        <div class="step">
+          <div class="n">4</div>
+          <h3>Pick it up</h3>
+          <p>Many jobs turn around fast. Need it today? Call ahead and ask.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="wrap why-grid">
+      <div>
+        <p class="eyebrow">Why People Come Back</p>
+        <h2>Real help from a neighborhood shop.</h2>
+      </div>
+      <div class="why-list">
+        <div class="why-item">
+          <h3>Friendly staff</h3>
+          <p>Helpful guidance whether you know exactly what you want or need ideas.</p>
+        </div>
+        <div class="why-item">
+          <h3>Lots to choose from</h3>
+          <p>Custom apparel, uniforms and practical everyday clothing in one place.</p>
+        </div>
+        <div class="why-item">
+          <h3>No bulk requirement</h3>
+          <p>Make a single personalized shirt without ordering 20 or 30 pieces.</p>
+        </div>
+        <div class="why-item">
+          <h3>Nearly 30 years local</h3>
+          <p>Family-owned and serving Santa Ana from the same community since 1996.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" class="quote">
+    <div class="wrap quote-grid">
+      <div>
+        <p class="eyebrow">Free Quote</p>
+        <h2>Tell the shop what you want to make.</h2>
+        <p class="body">Send a quick request and the shop will get back to you. For the fastest answer, you can also call during store hours.</p>
+        <div class="phone-big">
+          <span class="lab">Call for a Quote</span>
+          <a href="tel:+17145525501">(714) 552-5501</a>
+        </div>
+      </div>
+      <!-- Netlify Forms: submissions appear in the Netlify dashboard under Forms.
+           Set up an email notification there so the shop gets each request. -->
+      <form name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="quote-request">
+        <p class="hp"><label>Leave this field empty: <input name="bot-field"></label></p>
+        <div class="field">
+          <label for="q-name">Your name</label>
+          <input id="q-name" name="name" type="text" placeholder="Alex Rivera" required>
+        </div>
+        <div class="field">
+          <label for="q-phone">Phone number</label>
+          <input id="q-phone" name="phone" type="tel" placeholder="(714) 555-0123" required>
+        </div>
+        <div class="field">
+          <label for="q-project">What are you making?</label>
+          <select id="q-project" name="project">
+            <option value="" selected>Select a project</option>
+            <option>Custom t-shirt</option>
+            <option>Hoodie or sweater</option>
+            <option>Team or business apparel</option>
+            <option>School uniforms</option>
+            <option>Gift or one-of-one piece</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-qty">Estimated quantity</label>
+          <select id="q-qty" name="quantity">
+            <option value="" selected>Select quantity</option>
+            <option>1 piece</option>
+            <option>2 to 10</option>
+            <option>11 to 25</option>
+            <option>26 or more</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="q-date">When do you need it?</label>
+          <input id="q-date" name="needed-by" type="date">
+        </div>
+        <div class="field full">
+          <label for="q-idea">Tell us about your idea</label>
+          <textarea id="q-idea" name="idea" placeholder="What garment, colors and design do you have in mind?"></textarea>
+        </div>
+        <div class="submit">
+          <button class="btn solid" type="submit" style="border:none;cursor:pointer;font-size:1rem;width:100%;justify-content:center">Send My Quote Request <span class="arrow">&rarr;</span></button>
+        </div>
+        <p class="form-note">Your info goes straight to the shop and is only used to answer your request.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap visit-grid">
+      <div class="visit">
+        <p class="eyebrow">Visit Us</p>
+        <h2 style="margin-bottom:1.4rem">Come by the shop.</h2>
+        <p class="addr">2337 S Bristol St<br>Santa Ana, CA 92704</p>
+        <dl>
+          <dt>Phone</dt><dd><a href="tel:+17145525501">(714) 552-5501</a></dd>
+          <dt>Hours</dt><dd>Call to confirm today's hours</dd>
+          <dt>Parking</dt><dd>Street parking on Bristol St</dd>
+        </dl>
+        <a class="btn solid" href="https://www.google.com/maps/dir/?api=1&destination=T-Shirts+Factory+2337+S+Bristol+St+Santa+Ana+CA+92704" target="_blank" rel="noopener">Get Directions <span class="arrow">&rarr;</span></a>
+      </div>
+      <div class="facts">
+        <h3>Good to know</h3>
+        <ul>
+          <li><span>Minimum order</span><span>1 shirt</span></li>
+          <li><span>Printing</span><span>DTG, full color</span></li>
+          <li><span>Sizes</span><span>Kids to adult</span></li>
+          <li><span>Payment</span><span>Cards &amp; crypto accepted</span></li>
+          <li><span>Since</span><span>1996, family-owned</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="logo" href="#top">T-Shirts Factory</a>
+      <p>2337 S Bristol St, Santa Ana, CA 92704 &middot; (714) 552-5501</p>
+    </div>
+    <p class="fine">Family-owned custom printing &middot; Santa Ana since 1996</p>
+  </div>
+</footer>
+
+</body>
+</html>
