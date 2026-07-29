@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "neonwatty-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "neonwatty/job-apply-plugin"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "job-apply@neonwatty-plugins": true
+  }
+}
