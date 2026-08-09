@@ -5,7 +5,7 @@
 - **Experience asked:** 2+ years
 - **Apply:** https://www.linkedin.com/jobs/view/jr-finance-strategy-analyst-at-compa-4434088821
 - **Found:** 2026-08-09
-- **Status:** needs resume
+- **Status:** resume ready
 
 ---
 
