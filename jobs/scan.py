@@ -21,7 +21,9 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -34,6 +36,17 @@ TIMEOUT = 45
 
 
 # ---------------------------------------------------------------- http
+
+
+def fetch_text(url):
+    """GET returning raw text. Returns '' on failure."""
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html"})
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            return r.read().decode("utf-8", "replace")
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
+        print(f"    fetch failed: {url[:90]} -> {e}", file=sys.stderr)
+        return ""
 
 
 def fetch(url, data=None, headers=None):
@@ -69,7 +82,7 @@ def strip_html(s):
 # Each source function yields dicts: id, title, location, url, body, company.
 
 
-def from_greenhouse(src):
+def from_greenhouse(src, crit):
     token = src["token"]
     data = fetch(f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs?content=true")
     if not data:
@@ -85,7 +98,7 @@ def from_greenhouse(src):
         }
 
 
-def from_ashby(src):
+def from_ashby(src, crit):
     token = src["token"]
     data = fetch(f"https://api.ashbyhq.com/posting-api/job-board/{token}?includeCompensation=true")
     if not data:
@@ -101,7 +114,7 @@ def from_ashby(src):
         }
 
 
-def from_lever(src):
+def from_lever(src, crit):
     token = src["token"]
     data = fetch(f"https://api.lever.co/v0/postings/{token}?mode=json")
     if not data:
@@ -118,7 +131,7 @@ def from_lever(src):
         }
 
 
-def from_workday(src):
+def from_workday(src, crit):
     host, tenant, site = src.get("host"), src.get("tenant"), src.get("site")
     if not (host and tenant and site):
         print(f"    skipping {src['company']}: workday host/tenant/site not filled in", file=sys.stderr)
@@ -152,11 +165,94 @@ def from_workday(src):
             return
 
 
+LI_SEARCH = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
+LI_DETAIL = "https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/"
+LI_ID_RE = re.compile(r"/jobs/view/[a-z0-9-]*?-(\d{9,})")
+
+
+def _li_field(pattern, card):
+    m = re.search(pattern, card, re.S)
+    if not m:
+        return ""
+    return html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m.group(1)))).strip()
+
+
+def from_linkedin(src, crit):
+    """LinkedIn's logged-out guest job search.
+
+    This is the same endpoint that serves the public job search to signed-out
+    visitors. No account, no session cookie, no authenticated scraping. Job
+    descriptions cost one extra request each, so they are only fetched for
+    postings that already passed the title and location screen.
+    """
+    geo = src.get("geo_id", "")
+    posted_within = src.get("posted_within", "r604800")
+    pages = int(src.get("pages", 3))
+    pause = float(src.get("pause_seconds", 1.5))
+    seen_ids = set()
+
+    for kw in src.get("keywords", []):
+        for page in range(pages):
+            q = urllib.parse.urlencode(
+                {"keywords": kw, "geoId": geo, "f_TPR": posted_within, "start": page * 25}
+            )
+            page_html = fetch_text(f"{LI_SEARCH}?{q}")
+            time.sleep(pause)
+            if not page_html:
+                break
+
+            cards = re.split(r"<li>", page_html)[1:]
+            if not cards:
+                break
+
+            for card in cards:
+                m = re.search(r'href="(https://www\.linkedin\.com/jobs/view/[^"?]+)', card)
+                if not m:
+                    continue
+                url = m.group(1)
+                jid_m = LI_ID_RE.search(url)
+                if not jid_m:
+                    continue
+                jid = jid_m.group(1)
+                if jid in seen_ids:
+                    continue
+                seen_ids.add(jid)
+
+                title = _li_field(r'class="base-search-card__title"[^>]*>(.*?)</h3>', card)
+                company = _li_field(
+                    r'class="[^"]*base-search-card__subtitle[^"]*"[^>]*>(.*?)</h4>', card
+                )
+                loc = _li_field(r'class="job-search-card__location"[^>]*>(.*?)</span>', card)
+
+                stub = {"title": title, "location": loc, "body": "", "company": company or "Unknown"}
+                ok, _ = screen_shallow(stub, crit)
+                if not ok:
+                    continue
+
+                detail = fetch_text(f"{LI_DETAIL}{jid}")
+                time.sleep(pause)
+                body = ""
+                if detail:
+                    d = re.search(r"(?s)show-more-less-html__markup(.*?)</div>", detail)
+                    if d:
+                        body = strip_html(d.group(1))
+
+                yield {
+                    "id": f"linkedin:{jid}",
+                    "title": title,
+                    "location": loc,
+                    "url": url,
+                    "body": body,
+                    "company": company or "Unknown",
+                }
+
+
 SOURCE_FUNCS = {
     "greenhouse": from_greenhouse,
     "ashby": from_ashby,
     "lever": from_lever,
     "workday": from_workday,
+    "linkedin": from_linkedin,
 }
 
 
@@ -190,9 +286,9 @@ def hit(text, terms):
     return None
 
 
-def screen(job, crit):
-    """Return (passed, reason). reason explains a rejection."""
-    title, loc, body = job["title"], job["location"], job["body"]
+def screen_shallow(job, crit):
+    """Title and location only. Cheap enough to run before fetching a JD."""
+    title, loc = job["title"], job["location"]
 
     if not hit(title, crit["title_include"]):
         return False, "title not in target roles"
@@ -207,6 +303,16 @@ def screen(job, crit):
         if not hit(loc, crit["location_include"]):
             return False, f"location '{loc}' outside target area"
 
+    return True, ""
+
+
+def screen(job, crit):
+    """Return (passed, reason). reason explains a rejection."""
+    ok, reason = screen_shallow(job, crit)
+    if not ok:
+        return False, reason
+
+    body = job["body"]
     bad = hit(body, crit["body_exclude"])
     if bad:
         return False, f"description excluded on '{bad}'"
@@ -271,7 +377,7 @@ def main():
             print(f"  unknown source type {src['type']}", file=sys.stderr)
             continue
         print(f"  scanning {src['company']} ({src['type']})...", file=sys.stderr)
-        for job in fn(src):
+        for job in fn(src, crit):
             total += 1
             ok, reason = screen(job, crit)
             if not ok:
@@ -291,7 +397,11 @@ def main():
         if not os.listdir(day_dir):
             os.rmdir(day_dir)
 
-    print(f"\nScanned {total} postings. {matches} passed screening. {len(fresh)} are new.\n")
+    # `total` counts postings that reached full screening. LinkedIn applies the
+    # title and location screen inside the source function so it can skip
+    # fetching descriptions it would only throw away, so its rejects never get
+    # here. This is a throughput number, not a count of everything on the board.
+    print(f"\n{total} postings reached full screening. {matches} passed. {len(fresh)} are new.\n")
     for job, yrs in fresh:
         y = f"{yrs}+ yrs" if yrs is not None else "yrs n/s"
         print(f"  [{job['company']}] {job['title']}")

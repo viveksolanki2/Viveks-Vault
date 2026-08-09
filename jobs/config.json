@@ -16,7 +16,7 @@
       "financial associate", "investment associate", "treasury"
     ],
 
-    "_title_exclude_comment": "Matched as whole words after punctuation is collapsed, so 'engineer' will not fire on 'Engineering Finance Associate'. Keep wrong-function terms specific for the same reason.",
+    "_title_exclude_comment": "Matched as whole words after punctuation is collapsed, so 'engineer' will not fire on 'Engineering Finance Associate'. Keep wrong-function terms specific for the same reason. The IT and systems entries near the end are there because those roles need SQL, ERP, or systems depth Vivek does not have yet; drop them once he has a credential to back them.",
     "title_exclude": [
       "senior", "sr", "lead", "principal", "manager", "director",
       "vp", "vice president", "head of", "chief", "supervisor", "partner",
@@ -33,7 +33,12 @@
       "machinist", "technician", "warehouse", "driver", "recruiter",
 
       "security vetting", "counterintelligence", "warfighting",
-      "export compliance", "supply chain systems", "scenario design"
+      "export compliance", "supply chain systems", "scenario design",
+
+      "systems analyst", "business systems", "it business analyst",
+      "it systems", "functional analyst", "product owner", "solutions analyst",
+      "network", "infrastructure", "cybersecurity", "salesforce",
+      "logistics analyst", "quality analyst", "qa analyst"
     ],
 
     "location_include": [
@@ -69,68 +74,36 @@
     ]
   },
 
+  "_already_applied": [
+    "Rivian", "CorVel", "Edwards Lifesciences", "First American",
+    "loanDepot", "Pacific Life", "Outward Intelligence", "Google", "Anduril"
+  ],
+
   "sources": [
     {
-      "company": "Anduril Industries",
-      "type": "greenhouse",
-      "token": "andurilindustries",
+      "company": "LinkedIn",
+      "type": "linkedin",
       "verified": true,
-      "note": "Costa Mesa HQ. Confirmed working."
-    },
+      "note": "LinkedIn's logged-out guest job search, the same endpoint public visitors get. No account, no session cookie. Job descriptions are fetched only for postings that pass the title and location screen.",
 
-    {
-      "company": "Rivian",
-      "type": "workday",
-      "host": "rivian.wd12.myworkdayjobs.com",
-      "tenant": "rivian",
-      "site": "",
-      "verified": false,
-      "note": "Tenant resolves (422 on wrong site). Fill 'site' from the careers URL: rivian.wd12.myworkdayjobs.com/en-US/<SITE>"
-    },
-    {
-      "company": "CorVel",
-      "type": "workday",
-      "host": "corvel.wd1.myworkdayjobs.com",
-      "tenant": "corvel",
-      "site": "",
-      "verified": false,
-      "note": "Tenant resolves. Fill 'site' from the careers URL."
-    },
-    {
-      "company": "Edwards Lifesciences",
-      "type": "workday",
-      "host": "",
-      "tenant": "",
-      "site": "",
-      "verified": false,
-      "note": "Host not yet resolved. Copy the careers URL and I will fill this in."
-    },
-    {
-      "company": "First American",
-      "type": "workday",
-      "host": "",
-      "tenant": "",
-      "site": "",
-      "verified": false,
-      "note": "Host not yet resolved."
-    },
-    {
-      "company": "loanDepot",
-      "type": "workday",
-      "host": "",
-      "tenant": "",
-      "site": "",
-      "verified": false,
-      "note": "Host not yet resolved."
-    },
-    {
-      "company": "Pacific Life",
-      "type": "workday",
-      "host": "",
-      "tenant": "",
-      "site": "",
-      "verified": false,
-      "note": "Host not yet resolved."
+      "geo_id": "103575230",
+      "posted_within": "r604800",
+      "pages": 3,
+      "pause_seconds": 1.5,
+
+      "_posted_within_note": "r86400 = last 24h, r604800 = last 7 days. seen.json prevents repeats either way.",
+      "_pages_note": "25 results per page. 3 pages per keyword is roughly 75 postings per keyword before screening.",
+
+      "keywords": [
+        "financial analyst",
+        "finance associate",
+        "fp&a analyst",
+        "accounting coordinator",
+        "staff accountant",
+        "operations analyst",
+        "business analyst",
+        "financial operations"
+      ]
     }
   ]
 }

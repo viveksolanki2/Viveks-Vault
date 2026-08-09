@@ -22,9 +22,8 @@ Three reasons, all real:
   inbox cannot complete them.
 - Submissions are irreversible and go out under your name. A bad auto-tailored
   resume becomes a permanent record with that employer.
-- LinkedIn is not a source here. Its job search requires a logged-in session,
-  and automating one violates the User Agreement. The usual penalty is account
-  restriction, and your LinkedIn is worth more than the automation.
+- LinkedIn Easy Apply is a logged-in flow. The scanner reads LinkedIn's public
+  guest listings, but submitting still needs your session.
 
 The pipeline removes the search and the writing, which is most of the work. The
 click is yours.
@@ -45,6 +44,30 @@ click is yours.
 python3 jobs/scan.py --dry-run   # print matches, write nothing
 python3 jobs/scan.py             # write the queue and update seen.json
 ```
+
+## LinkedIn
+
+The primary source. It uses `linkedin.com/jobs-guest/jobs/api/...`, the endpoint
+LinkedIn serves to signed-out visitors. No account, no session cookie, no
+authenticated scraping, so nothing here can get your account restricted.
+
+Tunables in `config.json`:
+
+| Key | Meaning |
+| --- | --- |
+| `geo_id` | LinkedIn's location ID. `103575230` is the LA metro from your saved search |
+| `keywords` | One search per phrase. More phrases means wider coverage |
+| `posted_within` | `r86400` for last 24h, `r604800` for last 7 days |
+| `pages` | 25 results per page, per keyword |
+| `pause_seconds` | Delay between requests. Do not drop below 1.0 |
+
+Descriptions cost one extra request each, so they are only fetched for postings
+that already cleared the title and location screen. That keeps request volume
+proportional to real matches rather than to everything LinkedIn returns.
+
+Your `geo_id` is LA-centric, so searches pull in Riverside, Redlands, and
+Colton. The location filter drops them. If you want the search itself narrowed
+to Orange County, send me an OC job-search URL and I will swap the ID.
 
 ## Adding a company
 
