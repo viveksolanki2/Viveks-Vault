@@ -1,0 +1,344 @@
+<title>Job queue &middot; Vivek Solanki</title>
+<style>
+:root {
+  color-scheme: light;
+  --ground:   #F7F8FA;
+  --panel:    #FFFFFF;
+  --panel-2:  #F1F3F7;
+  --line:     #DDE2EB;
+  --line-soft:#E9ECF2;
+  --ink:      #101E36;
+  --ink-2:    #34435E;
+  --mute:     #64728A;
+  --accent:   #9A6B22;
+  --accent-b: #B98430;
+  --good:     #1B6B52;
+  --good-bg:  #E4F0EA;
+  --warn:     #8A6212;
+  --warn-bg:  #F6EEDC;
+  --dim-bg:   #EDEFF3;
+  --shadow:   0 1px 2px rgba(16,30,54,.06), 0 4px 14px rgba(16,30,54,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:   #0B1220;
+    --panel:    #121C2E;
+    --panel-2:  #17233A;
+    --line:     #263449;
+    --line-soft:#1D2A3F;
+    --ink:      #E8EDF6;
+    --ink-2:    #B9C5D8;
+    --mute:     #8496B0;
+    --accent:   #D9A94F;
+    --accent-b: #E8BE86;
+    --good:     #5FC49B;
+    --good-bg:  #123424;
+    --warn:     #D9AE5A;
+    --warn-bg:  #2A2213;
+    --dim-bg:   #16202F;
+    --shadow:   0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:   #0B1220;
+  --panel:    #121C2E;
+  --panel-2:  #17233A;
+  --line:     #263449;
+  --line-soft:#1D2A3F;
+  --ink:      #E8EDF6;
+  --ink-2:    #B9C5D8;
+  --mute:     #8496B0;
+  --accent:   #D9A94F;
+  --accent-b: #E8BE86;
+  --good:     #5FC49B;
+  --good-bg:  #123424;
+  --warn:     #D9AE5A;
+  --warn-bg:  #2A2213;
+  --dim-bg:   #16202F;
+  --shadow:   0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 40px 22px 72px; }
+
+/* ---------- masthead ---------- */
+.mast { border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 26px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin: 0 0 8px;
+}
+h1 {
+  font-family: Georgia, "Iowan Old Style", ui-serif, serif;
+  font-weight: 600; font-size: clamp(28px, 4.4vw, 40px);
+  letter-spacing: -.015em; line-height: 1.1; margin: 0; text-wrap: balance;
+  color: var(--ink);
+}
+.sub { color: var(--mute); margin: 10px 0 0; font-size: 14.5px; max-width: 62ch; }
+
+/* ---------- figures ---------- */
+.figs {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin: 24px 0 28px;
+}
+.fig {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 3px; padding: 14px 16px; box-shadow: var(--shadow);
+}
+.fig b {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 27px; font-weight: 600; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.15;
+}
+.fig span {
+  display: block; margin-top: 4px; font-size: 11px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--mute); font-weight: 600;
+}
+
+/* ---------- controls ---------- */
+.controls {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 12px; background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 3px; margin-bottom: 6px;
+}
+.search {
+  flex: 1 1 190px; min-width: 0; padding: 8px 11px;
+  border: 1px solid var(--line); border-radius: 3px;
+  background: var(--panel); color: var(--ink);
+  font: inherit; font-size: 14px;
+}
+.search::placeholder { color: var(--mute); }
+.toggle {
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  padding: 8px 13px; border: 1px solid var(--line); border-radius: 3px;
+  background: var(--panel); color: var(--ink-2);
+  font: inherit; font-size: 13px; font-weight: 600;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.toggle:hover { border-color: var(--accent); color: var(--ink); }
+.toggle[aria-pressed="true"] {
+  background: var(--ink); border-color: var(--ink); color: var(--panel);
+}
+:root[data-theme="dark"] .toggle[aria-pressed="true"],
+:root:not([data-theme="light"]) .toggle[aria-pressed="true"] { color: var(--ground); }
+.search:focus-visible, .toggle:focus-visible, .apply:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.count { font-size: 12.5px; color: var(--mute); margin: 0 0 18px; padding-left: 2px; }
+
+/* ---------- tiers ---------- */
+.tier { margin: 30px 0 12px; display: flex; align-items: baseline; gap: 10px; }
+.tier h2 {
+  font-family: Georgia, ui-serif, serif; font-size: 17px; font-weight: 600;
+  margin: 0; color: var(--ink); letter-spacing: -.01em;
+}
+.tier em {
+  font-style: normal; font-size: 12.5px; color: var(--mute);
+}
+.tier::after {
+  content: ""; flex: 1; height: 1px; background: var(--line); margin-left: 4px;
+}
+
+/* ---------- rows ---------- */
+.list { display: flex; flex-direction: column; gap: 7px; }
+.row {
+  display: grid; grid-template-columns: 40px 1fr auto;
+  gap: 14px; align-items: center;
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 3px solid var(--stripe, var(--line));
+  border-radius: 3px; padding: 13px 15px;
+  box-shadow: var(--shadow);
+  transition: border-color .12s, transform .12s;
+}
+.row:hover { border-color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .row:hover { transform: translateX(1px); }
+}
+.row.t1 { --stripe: var(--good); }
+.row.t2 { --stripe: var(--accent); }
+.row.t3 { --stripe: var(--line); }
+.row.done { opacity: .5; }
+
+.rank {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px; font-variant-numeric: tabular-nums;
+  color: var(--mute); text-align: right; font-weight: 600;
+}
+.main { min-width: 0; }
+.title {
+  font-weight: 600; font-size: 15px; color: var(--ink);
+  margin: 0 0 5px; line-height: 1.3;
+}
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.co { font-size: 13.5px; color: var(--ink-2); font-weight: 500; }
+.chip {
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  padding: 2px 7px; border-radius: 2px;
+  background: var(--dim-bg); color: var(--mute);
+  white-space: nowrap;
+}
+.chip.oc  { background: var(--good-bg); color: var(--good); }
+.chip.yrs {
+  font-family: ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.chip.flag { background: var(--warn-bg); color: var(--warn); }
+
+.apply {
+  display: inline-block; white-space: nowrap;
+  padding: 8px 15px; border-radius: 3px;
+  background: var(--ink); color: var(--panel);
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--ink);
+  transition: background .12s, color .12s;
+}
+:root[data-theme="dark"] .apply,
+:root:not([data-theme="light"]) .apply { color: var(--ground); }
+.apply:hover { background: var(--accent); border-color: var(--accent); }
+
+.empty {
+  padding: 40px 16px; text-align: center; color: var(--mute);
+  border: 1px dashed var(--line); border-radius: 3px; font-size: 14px;
+}
+
+/* ---------- footer ---------- */
+.how {
+  margin-top: 54px; padding-top: 24px; border-top: 2px solid var(--ink);
+}
+.how h2 {
+  font-family: Georgia, ui-serif, serif; font-size: 19px;
+  font-weight: 600; margin: 0 0 14px; color: var(--ink);
+}
+.steps { display: grid; gap: 10px; margin: 0 0 22px; padding: 0; list-style: none; }
+.steps li {
+  display: grid; grid-template-columns: 26px 1fr; gap: 12px;
+  align-items: start; font-size: 14px; color: var(--ink-2);
+}
+.steps b {
+  font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+  color: var(--accent); font-weight: 700; padding-top: 1px;
+}
+.note {
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px; padding: 15px 17px; font-size: 14px; color: var(--ink-2);
+}
+.note strong { color: var(--ink); }
+.note p { margin: 0 0 9px; }
+.note p:last-child { margin: 0; }
+.stamp {
+  margin-top: 26px; font-size: 12px; color: var(--mute);
+  font-family: ui-monospace, Menlo, monospace;
+}
+@media (max-width: 620px) {
+  .row { grid-template-columns: 30px 1fr; }
+  .apply { grid-column: 2; justify-self: start; margin-top: 4px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">Scanned 2026-08-09 &middot; refreshes daily at 9:00 AM PT</p>
+    <h1>Job queue</h1>
+    <p class="sub">Every open role the scanner found that clears your filters: early career,
+    Orange County or LA, non-commission. Ranked by fit. Tailored resumes are written
+    overnight and land in the repo beside each posting.</p>
+  </header>
+
+  <div class="figs">
+    <div class="fig"><b>62</b><span>roles queued</span></div>
+    <div class="fig"><b>37</b><span>in Orange County</span></div>
+    <div class="fig"><b>45</b><span>asking 0&ndash;2 years</span></div>
+    <div class="fig"><b>46</b><span>not yet applied</span></div>
+  </div>
+
+  <div class="controls">
+    <input class="search" id="q" type="search" placeholder="Filter by role, company, or city" aria-label="Filter roles">
+    <button class="toggle" id="f-oc"  aria-pressed="false">Orange County only</button>
+    <button class="toggle" id="f-jr"  aria-pressed="false">0&ndash;2 years</button>
+    <button class="toggle" id="f-ap"  aria-pressed="false">Hide applied</button>
+  </div>
+  <p class="count" id="count"></p>
+
+  <div class="tier"><h2>Strong fit</h2><em>Orange County, junior, finance titled &middot; 11</em></div><div class="list"><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="jr. finance &amp; strategy analyst compa irvine, ca"><div class="rank">1</div><div class="main"><p class="title">Jr. Finance &amp; Strategy Analyst</p><div class="meta"><span class="co">Compa</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/jr-finance-strategy-analyst-at-compa-4434088821" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="finance associate healthpeak properties, inc. irvine, ca"><div class="rank">2</div><div class="main"><p class="title">Finance Associate</p><div class="meta"><span class="co">Healthpeak Properties, Inc.</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/finance-associate-at-healthpeak-properties-inc-4449219792" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="financial analyst kcg search irvine, ca"><div class="rank">3</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">KCG Search</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-kcg-search-4450795693" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="financial analyst robert half irvine, ca"><div class="rank">4</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">Robert Half</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-robert-half-4450696503" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="financial analyst talentally newport beach, ca"><div class="rank">5</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">TalentAlly</span><span class="chip oc">Newport Beach, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-talentally-4450739546" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="staff accountant - (benefits and payroll) 7 leaves cafe huntington beach, ca"><div class="rank">6</div><div class="main"><p class="title">Staff Accountant - (Benefits and Payroll)</p><div class="meta"><span class="co">7 Leaves Cafe</span><span class="chip oc">Huntington Beach, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-benefits-and-payroll-at-7-leaves-cafe-4447338412" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="staff accountant | client accounting services (cas - public accounting / cpa firm experience required) capata newport beach, ca"><div class="rank">7</div><div class="main"><p class="title">Staff Accountant | Client Accounting Services (CAS - Public Accounting / CPA Firm Experience Required)</p><div class="meta"><span class="co">CAPATA</span><span class="chip oc">Newport Beach, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-client-accounting-services-cas-public-accounting-cpa-firm-experience-required-at-capata-4449778980" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="treasury analyst capital group irvine, ca"><div class="rank">8</div><div class="main"><p class="title">Treasury Analyst</p><div class="meta"><span class="co">Capital Group</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/treasury-analyst-at-capital-group-4449321829" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="accounting specialist forma irvine, ca"><div class="rank">9</div><div class="main"><p class="title">Accounting Specialist</p><div class="meta"><span class="co">Forma</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/accounting-specialist-at-forma-4449066278" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="staff accountant royal pacific funding newport beach, ca"><div class="rank">10</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Royal Pacific Funding</span><span class="chip oc">Newport Beach, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-royal-pacific-funding-4449771685" target="_blank" rel="noopener">Apply</a></article><article class="row t1" data-oc="1" data-jr="1" data-ap="0" data-s="entry accounting associate south county lexus mission viejo, ca"><div class="rank">11</div><div class="main"><p class="title">Entry Accounting Associate</p><div class="meta"><span class="co">South County Lexus</span><span class="chip oc">Mission Viejo, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/entry-accounting-associate-at-south-county-lexus-4448879779" target="_blank" rel="noopener">Apply</a></article></div><div class="tier"><h2>Worth applying</h2><em>one criterion soft, still in range &middot; 14</em></div><div class="list"><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="financial analyst flow control group orange county, ca"><div class="rank">12</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">Flow Control Group</span><span class="chip oc">Orange County, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-flow-control-group-4450780438" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="financial analyst virgin galactic tustin, ca"><div class="rank">13</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">Virgin Galactic</span><span class="chip oc">Tustin, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-virgin-galactic-4432033923" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="1" data-ap="0" data-s="operations junior data &amp; staffing analyst kahana feld irvine, ca"><div class="rank">14</div><div class="main"><p class="title">Operations Junior Data &amp; Staffing Analyst</p><div class="meta"><span class="co">Kahana Feld</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">1+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/operations-junior-data-staffing-analyst-at-kahana-feld-4451022977" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="0" data-jr="1" data-ap="0" data-s="financial analyst internet brands el segundo, ca"><div class="rank">15</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">Internet Brands</span><span class="chip">El Segundo, CA</span><span class="chip yrs">0+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-internet-brands-4419220054" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="0" data-jr="1" data-ap="0" data-s="financial analyst - supply chain red bull santa monica, ca"><div class="rank">16</div><div class="main"><p class="title">Financial Analyst - Supply Chain</p><div class="meta"><span class="co">Red Bull</span><span class="chip">Santa Monica, CA</span><span class="chip yrs">1+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-supply-chain-at-red-bull-4449699402" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="accounting analyst calprivate bank newport beach, ca"><div class="rank">17</div><div class="main"><p class="title">Accounting Analyst</p><div class="meta"><span class="co">CalPrivate Bank</span><span class="chip oc">Newport Beach, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/accounting-analyst-at-calprivate-bank-4440092598" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="staff accountant century group orange county, ca"><div class="rank">18</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Century Group</span><span class="chip oc">Orange County, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-century-group-4450657145" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="staff accountant geneva search partners llc newport beach, ca"><div class="rank">19</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Geneva Search Partners LLC</span><span class="chip oc">Newport Beach, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-geneva-search-partners-llc-4430857007" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="staff accountant robert half brea, ca"><div class="rank">20</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Robert Half</span><span class="chip oc">Brea, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-robert-half-4450709014" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="0" data-ap="0" data-s="staff accountant vaco by highspring irvine, ca"><div class="rank">21</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Vaco by Highspring</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-vaco-by-highspring-4450527419" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="1" data-ap="0" data-s="business process analyst msi orange, ca"><div class="rank">22</div><div class="main"><p class="title">Business Process Analyst</p><div class="meta"><span class="co">MSI</span><span class="chip oc">Orange, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/business-process-analyst-at-msi-4438438272" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="1" data-jr="1" data-ap="0" data-s="incentives revenue operations analyst qcells north america irvine, ca"><div class="rank">23</div><div class="main"><p class="title">Incentives Revenue Operations Analyst</p><div class="meta"><span class="co">Qcells North America</span><span class="chip oc">Irvine, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/incentives-revenue-operations-analyst-at-qcells-north-america-4448781331" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="0" data-jr="1" data-ap="0" data-s="analyst, fp&amp;a the trade desk los angeles, ca"><div class="rank">24</div><div class="main"><p class="title">Analyst, FP&amp;A</p><div class="meta"><span class="co">The Trade Desk</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/analyst-fp-a-at-the-trade-desk-4433015165" target="_blank" rel="noopener">Apply</a></article><article class="row t2" data-oc="0" data-jr="1" data-ap="0" data-s="strategic finance analyst hermeus los angeles, ca"><div class="rank">25</div><div class="main"><p class="title">Strategic Finance Analyst</p><div class="meta"><span class="co">Hermeus</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">1+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/strategic-finance-analyst-at-hermeus-4449024333" target="_blank" rel="noopener">Apply</a></article></div><div class="tier"><h2>Stretch or off-profile</h2><em>commute, seniority, or function gap &middot; 37</em></div><div class="list"><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="junior staff accountant confidential los angeles metropolitan area"><div class="rank">26</div><div class="main"><p class="title">Junior Staff Accountant</p><div class="meta"><span class="co">Confidential</span><span class="chip">Los Angeles Metropolitan Area</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/junior-staff-accountant-at-confidential-4433415849" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="staff accountant ghost los angeles, ca"><div class="rank">27</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Ghost</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-ghost-4444219848" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="staff accountant neros technologies torrance, ca"><div class="rank">28</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Neros Technologies</span><span class="chip">Torrance, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-neros-technologies-4410884705" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="treasury analyst netflix los angeles, ca"><div class="rank">29</div><div class="main"><p class="title">Treasury Analyst</p><div class="meta"><span class="co">Netflix</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/treasury-analyst-at-netflix-4438416606" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="cft staff accountant panda restaurant group pasadena, ca"><div class="rank">30</div><div class="main"><p class="title">CFT Staff Accountant</p><div class="meta"><span class="co">Panda Restaurant Group</span><span class="chip">Pasadena, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/cft-staff-accountant-at-panda-restaurant-group-4441145019" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="accounting coordinator professional search group los angeles, ca"><div class="rank">31</div><div class="main"><p class="title">Accounting Coordinator</p><div class="meta"><span class="co">Professional Search Group</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/accounting-coordinator-at-professional-search-group-4449685334" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="staff accountant verus aerospace torrance, ca"><div class="rank">32</div><div class="main"><p class="title">Staff Accountant</p><div class="meta"><span class="co">Verus Aerospace</span><span class="chip">Torrance, CA</span><span class="chip yrs">not stated</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/staff-accountant-at-verus-aerospace-4448910570" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="2026 early career engineering finance associate anduril industries costa mesa, california, united states"><div class="rank">33</div><div class="main"><p class="title">2026 Early Career Engineering Finance Associate</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">not stated</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5159092007?gh_jid=5159092007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="program financial analyst, autonomous airpower anduril industries costa mesa, california, united states"><div class="rank">34</div><div class="main"><p class="title">Program Financial Analyst, Autonomous Airpower</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5130014007?gh_jid=5130014007" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="sales finance analyst, away from home califia farms los angeles, ca"><div class="rank">35</div><div class="main"><p class="title">Sales Finance Analyst, Away From Home</p><div class="meta"><span class="co">Califia Farms</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/sales-finance-analyst-away-from-home-at-califia-farms-4449773663" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="1" data-jr="0" data-ap="0" data-s="operations analyst mach industries huntington beach, ca"><div class="rank">36</div><div class="main"><p class="title">Operations Analyst</p><div class="meta"><span class="co">Mach Industries</span><span class="chip oc">Huntington Beach, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/operations-analyst-at-mach-industries-4448733747" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="0" data-ap="0" data-s="financial analyst graymatter robotics los angeles metropolitan area"><div class="rank">37</div><div class="main"><p class="title">Financial Analyst</p><div class="meta"><span class="co">GrayMatter Robotics</span><span class="chip">Los Angeles Metropolitan Area</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-at-graymatter-robotics-4449223483" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="0" data-ap="0" data-s="financial analyst, central planning red bull santa monica, ca"><div class="rank">38</div><div class="main"><p class="title">Financial Analyst, Central Planning</p><div class="meta"><span class="co">Red Bull</span><span class="chip">Santa Monica, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/financial-analyst-central-planning-at-red-bull-4440884762" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="0" data-ap="0" data-s="strategic finance associate scopely culver city, ca"><div class="rank">39</div><div class="main"><p class="title">Strategic Finance Associate</p><div class="meta"><span class="co">Scopely</span><span class="chip">Culver City, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/strategic-finance-associate-at-scopely-4448621756" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="business analyst arixa capital los angeles, ca"><div class="rank">40</div><div class="main"><p class="title">Business Analyst</p><div class="meta"><span class="co">Arixa Capital</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">1+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/business-analyst-at-arixa-capital-4425988534" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="analyst, trade operations wilshire santa monica, ca"><div class="rank">41</div><div class="main"><p class="title">Analyst, Trade Operations</p><div class="meta"><span class="co">Wilshire</span><span class="chip">Santa Monica, CA</span><span class="chip yrs">0+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/analyst-trade-operations-at-wilshire-4449413263" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="project analyst ll hntb los angeles, ca"><div class="rank">42</div><div class="main"><p class="title">Project Analyst ll</p><div class="meta"><span class="co">HNTB</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/project-analyst-ll-at-hntb-4441657259" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="portfolio management analyst mattel, inc. el segundo, ca"><div class="rank">43</div><div class="main"><p class="title">Portfolio Management Analyst</p><div class="meta"><span class="co">Mattel, Inc.</span><span class="chip">El Segundo, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/portfolio-management-analyst-at-mattel-inc-4449983580" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="billing coordinator rapiscan systems torrance, ca"><div class="rank">44</div><div class="main"><p class="title">Billing Coordinator</p><div class="meta"><span class="co">Rapiscan Systems</span><span class="chip">Torrance, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/billing-coordinator-at-rapiscan-systems-4430645551" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="strategy and operations analyst shinkei el segundo, ca"><div class="rank">45</div><div class="main"><p class="title">Strategy and Operations Analyst</p><div class="meta"><span class="co">Shinkei</span><span class="chip">El Segundo, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/strategy-and-operations-analyst-at-shinkei-4423070427" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="1" data-ap="0" data-s="business system analyst vast long beach, ca"><div class="rank">46</div><div class="main"><p class="title">Business System Analyst</p><div class="meta"><span class="co">Vast</span><span class="chip">Long Beach, CA</span><span class="chip yrs">2+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/business-system-analyst-at-vast-4449209634" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="business operations associate anduril industries costa mesa, california, united states"><div class="rank">47</div><div class="main"><p class="title">Business Operations Associate</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">1+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/4951316007?gh_jid=4951316007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="division operations analyst, counter intrusion anduril industries irvine, california, united states"><div class="rank">48</div><div class="main"><p class="title">Division Operations Analyst, Counter Intrusion</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Irvine, California, United States</span><span class="chip yrs">1+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5171330007?gh_jid=5171330007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="operations analyst, quality control anduril industries costa mesa, california, united states"><div class="rank">49</div><div class="main"><p class="title">Operations Analyst, Quality Control</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">1+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5025986007?gh_jid=5025986007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="business operations, air dominance &amp; strike anduril industries costa mesa, california, united states"><div class="rank">50</div><div class="main"><p class="title">Business Operations, Air Dominance &amp; Strike</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/4790841007?gh_jid=4790841007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="business operations associate, production anduril industries costa mesa, california, united states"><div class="rank">51</div><div class="main"><p class="title">Business Operations Associate, Production</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/4619191007?gh_jid=4619191007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="business operations engineer, air dominance &amp; strike anduril industries costa mesa, california, united states"><div class="rank">52</div><div class="main"><p class="title">Business Operations Engineer, Air Dominance &amp; Strike</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5111193007?gh_jid=5111193007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="division operations analyst, tactical recon &amp; strike anduril industries costa mesa, california, united states"><div class="rank">53</div><div class="main"><p class="title">Division Operations Analyst, Tactical Recon &amp; Strike</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5201741007?gh_jid=5201741007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="planning analyst anduril industries costa mesa, california, united states"><div class="rank">54</div><div class="main"><p class="title">Planning Analyst</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/4657698007?gh_jid=4657698007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="1" data-ap="1" data-s="product operations associate, tier 1 anduril industries santa ana, california, united states"><div class="rank">55</div><div class="main"><p class="title">Product Operations Associate, Tier 1</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Santa Ana, California, United States</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5081383007?gh_jid=5081383007" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="0" data-ap="0" data-s="analyst, asset management lihtc leaders los angeles, ca"><div class="rank">56</div><div class="main"><p class="title">Analyst, Asset Management</p><div class="meta"><span class="co">LIHTC Leaders</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/analyst-asset-management-at-lihtc-leaders-4449408819" target="_blank" rel="noopener">Apply</a></article><article class="row t3" data-oc="0" data-jr="0" data-ap="0" data-s="sales planning &amp; reporting analyst the honest company los angeles, ca"><div class="rank">57</div><div class="main"><p class="title">Sales Planning &amp; Reporting Analyst</p><div class="meta"><span class="co">The Honest Company</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">3+ years</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/sales-planning-reporting-analyst-at-the-honest-company-4448478232" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="0" data-ap="1" data-s="business operations associate - technical projects anduril industries costa mesa, california, united states"><div class="rank">58</div><div class="main"><p class="title">Business Operations Associate - Technical Projects</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">3+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/4951318007?gh_jid=4951318007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="0" data-ap="1" data-s="division operations associate - maneuver dominance anduril industries costa mesa, california, united states"><div class="rank">59</div><div class="main"><p class="title">Division Operations Associate - Maneuver Dominance</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">3+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5185048007?gh_jid=5185048007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="0" data-ap="1" data-s="division operations associate, tactical recon &amp; strike anduril industries costa mesa, california, united states"><div class="rank">60</div><div class="main"><p class="title">Division Operations Associate, Tactical Recon &amp; Strike</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">3+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5187826007?gh_jid=5187826007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="1" data-jr="0" data-ap="1" data-s="s&amp;op planning analyst anduril industries costa mesa, california, united states"><div class="rank">61</div><div class="main"><p class="title">S&amp;OP Planning Analyst</p><div class="meta"><span class="co">Anduril Industries</span><span class="chip oc">Costa Mesa, California, United States</span><span class="chip yrs">3+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://boards.greenhouse.io/andurilindustries/jobs/5165241007?gh_jid=5165241007" target="_blank" rel="noopener">Apply</a></article><article class="row t3 done" data-oc="0" data-jr="1" data-ap="1" data-s="strategy and operations analyst, youtube ads gtm google los angeles, ca"><div class="rank">62</div><div class="main"><p class="title">Strategy and Operations Analyst, YouTube Ads GTM</p><div class="meta"><span class="co">Google</span><span class="chip">Los Angeles, CA</span><span class="chip yrs">2+ years</span><span class="chip flag">already applied</span></div></div><a class="apply" href="https://www.linkedin.com/jobs/view/strategy-and-operations-analyst-youtube-ads-gtm-at-google-4449146036" target="_blank" rel="noopener">Apply</a></article></div>
+  <div class="empty" id="empty" hidden>No roles match those filters.</div>
+
+  <section class="how">
+    <h2>How this runs</h2>
+    <ol class="steps">
+      <li><b>01</b><span>At 9:00 AM PT the scanner reads LinkedIn's public listings, screens them against your criteria, and drops new matches here.</span></li>
+      <li><b>02</b><span>Each new posting gets a one-page resume tailored to its description, built only from your master profile. Banned phrasing is blocked at the source.</span></li>
+      <li><b>03</b><span>Everything commits to the repo and you get a push notification and an email.</span></li>
+      <li><b>04</b><span>You hit Apply, attach the resume that was written for that role, and submit.</span></li>
+    </ol>
+    <div class="note">
+      <p><strong>Why step 4 is yours.</strong> Submitting through Easy Apply needs your logged-in
+      LinkedIn session. Handing a scheduled cloud job your session cookie means storing a live
+      credential, and automated applying is the specific thing LinkedIn's User Agreement bans and
+      screens for. The penalty is account restriction. Your LinkedIn is where Rahul, Tejas, and
+      Sam reach you, so it is worth more than the clicks it would save.</p>
+      <p>Easy Apply also asks per-employer screening questions. Salary expectations and
+      "years with SQL" cannot be unanswered once submitted, and guessing on those is exactly the
+      accuracy problem you asked me to protect against.</p>
+      <p>If you want the clicking automated anyway, that runs on your machine through the
+      job-apply plugin, in your own browser, with you watching. Say the word and I will set it up.</p>
+    </div>
+    <p class="stamp">62 roles &middot; generated 2026-08-09 &middot; source: jobs/queue/</p>
+  </section>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.row'));
+  var count = document.getElementById('count');
+  var empty = document.getElementById('empty');
+  var f = { oc: false, jr: false, ap: false };
+
+  function apply() {
+    var term = q.value.trim().toLowerCase();
+    var shown = 0;
+    rows.forEach(function (r) {
+      var ok = true;
+      if (f.oc && r.dataset.oc !== '1') ok = false;
+      if (f.jr && r.dataset.jr !== '1') ok = false;
+      if (f.ap && r.dataset.ap === '1') ok = false;
+      if (ok && term && r.dataset.s.indexOf(term) === -1) ok = false;
+      r.hidden = !ok;
+      if (ok) shown++;
+    });
+    count.textContent = shown + (shown === 1 ? ' role shown' : ' roles shown');
+    empty.hidden = shown !== 0;
+    document.querySelectorAll('.tier').forEach(function (t) {
+      var n = t.nextElementSibling, any = false;
+      if (n) n.querySelectorAll('.row').forEach(function (r) { if (!r.hidden) any = true; });
+      t.hidden = !any;
+      if (n) n.hidden = !any;
+    });
+  }
+
+  [['f-oc', 'oc'], ['f-jr', 'jr'], ['f-ap', 'ap']].forEach(function (p) {
+    var el = document.getElementById(p[0]);
+    el.addEventListener('click', function () {
+      f[p[1]] = !f[p[1]];
+      el.setAttribute('aria-pressed', String(f[p[1]]));
+      apply();
+    });
+  });
+  q.addEventListener('input', apply);
+  apply();
+})();
+</script>
