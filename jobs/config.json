@@ -1,0 +1,136 @@
+{
+  "_comment": "Criteria and sources for the daily job scan. Edit this file to add companies or tune filters.",
+
+  "criteria": {
+    "max_years_experience": 3,
+    "salary_floor": 55000,
+
+    "title_include": [
+      "analyst", "fp&a", "fpa", "finance associate", "financial operations",
+      "accounting coordinator", "accounting associate", "accounting specialist",
+      "staff accountant", "accountant i", "junior accountant",
+      "finance coordinator", "loan coordinator", "loan processor",
+      "bookkeeper", "accounts payable", "accounts receivable",
+      "billing specialist", "billing coordinator", "revenue operations",
+      "business operations", "operations associate", "operations coordinator",
+      "financial associate", "investment associate", "treasury"
+    ],
+
+    "_title_exclude_comment": "Matched as whole words after punctuation is collapsed, so 'engineer' will not fire on 'Engineering Finance Associate'. Keep wrong-function terms specific for the same reason.",
+    "title_exclude": [
+      "senior", "sr", "lead", "principal", "manager", "director",
+      "vp", "vice president", "head of", "chief", "supervisor", "partner",
+      "ii", "iii", "iv", "level 2", "level 3",
+      "intern", "internship", "co op",
+      "account executive", "sales representative", "outside sales",
+      "insurance agent", "financial advisor", "wealth advisor",
+
+      "software engineer", "mechanical engineer", "hardware engineer",
+      "systems engineer", "test engineer", "quality engineer",
+      "manufacturing engineer", "electrical engineer", "process engineer",
+      "engineer i", "developer", "data scientist", "research scientist",
+      "nurse", "clinical research", "clinical trial",
+      "machinist", "technician", "warehouse", "driver", "recruiter",
+
+      "security vetting", "counterintelligence", "warfighting",
+      "export compliance", "supply chain systems", "scenario design"
+    ],
+
+    "location_include": [
+      "orange county", "irvine", "santa ana", "costa mesa", "newport beach",
+      "anaheim", "tustin", "orange, ca", "orange, california", "fullerton",
+      "brea", "cypress", "aliso viejo", "lake forest", "mission viejo",
+      "huntington beach", "garden grove", "laguna", "yorba linda",
+      "san clemente", "rancho santa margarita", "buena park", "westminster",
+      "fountain valley", "placentia", "la habra", "seal beach", "stanton",
+      "los alamitos", "dana point", "foothill ranch",
+
+      "playa vista", "los angeles", "el segundo", "culver city",
+      "santa monica", "long beach", "pasadena", "burbank", "torrance",
+      "cerritos", "downey", "commerce, ca",
+
+      "remote", "united states"
+    ],
+
+    "location_exclude": [
+      "new york", "texas", "florida", "washington", "virginia", "ohio",
+      "michigan", "georgia", "illinois", "colorado", "arizona", "nevada",
+      "utah", "oregon", "massachusetts", "north carolina", "pennsylvania",
+      "san francisco", "san jose", "palo alto", "mountain view", "sunnyvale",
+      "seattle", "austin", "boston", "chicago", "denver", "atlanta",
+      "canada", "united kingdom", "india", "germany", "australia"
+    ],
+
+    "body_exclude": [
+      "commission only", "commission-only", "100% commission",
+      "uncapped commission", "purchase your own leads",
+      "must obtain life insurance license", "multi-level",
+      "active security clearance required", "ts/sci"
+    ]
+  },
+
+  "sources": [
+    {
+      "company": "Anduril Industries",
+      "type": "greenhouse",
+      "token": "andurilindustries",
+      "verified": true,
+      "note": "Costa Mesa HQ. Confirmed working."
+    },
+
+    {
+      "company": "Rivian",
+      "type": "workday",
+      "host": "rivian.wd12.myworkdayjobs.com",
+      "tenant": "rivian",
+      "site": "",
+      "verified": false,
+      "note": "Tenant resolves (422 on wrong site). Fill 'site' from the careers URL: rivian.wd12.myworkdayjobs.com/en-US/<SITE>"
+    },
+    {
+      "company": "CorVel",
+      "type": "workday",
+      "host": "corvel.wd1.myworkdayjobs.com",
+      "tenant": "corvel",
+      "site": "",
+      "verified": false,
+      "note": "Tenant resolves. Fill 'site' from the careers URL."
+    },
+    {
+      "company": "Edwards Lifesciences",
+      "type": "workday",
+      "host": "",
+      "tenant": "",
+      "site": "",
+      "verified": false,
+      "note": "Host not yet resolved. Copy the careers URL and I will fill this in."
+    },
+    {
+      "company": "First American",
+      "type": "workday",
+      "host": "",
+      "tenant": "",
+      "site": "",
+      "verified": false,
+      "note": "Host not yet resolved."
+    },
+    {
+      "company": "loanDepot",
+      "type": "workday",
+      "host": "",
+      "tenant": "",
+      "site": "",
+      "verified": false,
+      "note": "Host not yet resolved."
+    },
+    {
+      "company": "Pacific Life",
+      "type": "workday",
+      "host": "",
+      "tenant": "",
+      "site": "",
+      "verified": false,
+      "note": "Host not yet resolved."
+    }
+  ]
+}
