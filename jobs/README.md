@@ -103,3 +103,44 @@ wrong-function exclusions specific for that reason.
 If the queue fills with noise, add the offending phrase to `title_exclude`. If a
 role you wanted got dropped, check whether an exclusion swallowed it before
 widening `title_include`.
+
+## Dreamwork MCP
+
+`.mcp.json` registers `@dreamworkhq/mcp`, a job-search MCP server, as a
+project-scoped server. It loads on the next Claude Code start in this repo.
+
+It runs in **free guest mode** with no key and no account. That covers
+`browse_listings`, `get_listing`, `get_platform_context`, and
+`get_upgrade_link`, so listings are readable immediately.
+
+The other 64 tools need a free account and an API key. Sign in at
+dreamworkhq.com, open Profile then MCP, generate a key, and add it to
+`.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "dreamwork": {
+      "command": "npx",
+      "args": ["-y", "@dreamworkhq/mcp"],
+      "env": { "DREAMWORK_API_KEY": "sk_..." }
+    }
+  }
+}
+```
+
+A key carries four scopes you pick when generating it: read, write, apply,
+send mail. All four start selected. Uncheck what you do not want an agent
+doing. A key can do less than you can, never more.
+
+**This is the piece the local pipeline cannot do.** Its `apply` tool submits
+to employers under your name, and `set_autopilot` authorizes recurring real
+applications. That works because Dreamwork holds your authorization directly
+and you scope it yourself, rather than a scheduled job borrowing your
+LinkedIn session. If you want applying automated, this is the route, and
+enabling it is your decision to make with explicit consent, not something
+to switch on from a cron job.
+
+Note the overlap: this server does its own matching, resume tailoring, and
+pipeline tracking. Running it alongside `scan.py` means two systems doing
+the same job. Pick one as the source of truth rather than reconciling both.

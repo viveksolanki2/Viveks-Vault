@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dreamwork": {
+      "command": "npx",
+      "args": ["-y", "@dreamworkhq/mcp"]
+    }
+  }
+}
