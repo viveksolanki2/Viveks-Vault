@@ -2,7 +2,10 @@
   "mcpServers": {
     "dreamwork": {
       "command": "npx",
-      "args": ["-y", "@dreamworkhq/mcp"]
+      "args": ["-y", "@dreamworkhq/mcp"],
+      "env": {
+        "DREAMWORK_API_KEY": "${DREAMWORK_API_KEY}"
+      }
     }
   }
 }
